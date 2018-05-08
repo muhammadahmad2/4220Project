@@ -3,6 +3,7 @@ import cv2
 import sys
 import random
 import numpy as np
+import tensorflow as tf
 
 
 def draw_rects(img, x1, y1, x2, y2, color):
@@ -36,6 +37,64 @@ class Eigenfaces(object):
         
         for j in range(0, self.images):                                
             L[:, j] -= self.mean_img[:]
+            
+  
+        n_hidden_1 = 100
+        n_hidden_2 = 100
+
+        x = tf.placeholder(tf.float32, shape=[None, 4])
+
+        weights = {
+            'h1': tf.Variable(tf.random_normal([4, n_hidden_1])),
+            'h2': tf.Variable(tf.random_normal([n_hidden_1, n_hidden_2])),
+            'out': tf.Variable(tf.random_normal([n_hidden_2, 3]))
+        }
+        biases = {
+            'b1': tf.Variable(tf.random_normal([n_hidden_1])),
+            'b2': tf.Variable(tf.random_normal([n_hidden_2])),
+            'out': tf.Variable(tf.random_normal([3]))
+        }
+
+        layer_1 = tf.nn.sigmoid(tf.add(tf.matmul(x, weights['h1']), biases['b1']))
+
+        layer_2 = tf.nn.sigmoid(tf.add(tf.matmul(layer_1, weights['h2']), biases['b2']))
+
+        y = tf.matmul(layer_2, weights['out']) + biases['out']
+        
+        
+        
+        ref = tf.placeholder(tf.float32, shape=[None, 3])
+        cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=y, labels=ref))
+
+        rate = 0.01
+        optimizer = tf.train.GradientDescentOptimizer(rate).minimize(cross_entropy)
+
+        prediction = tf.nn.softmax(y)
+        
+        
+        correct_prediction = tf.equal(tf.argmax(prediction,1), tf.argmax(ref,1))
+        accuracy = 100.*tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+        epochs = 1000
+        batch_size = 10
+
+        sess = tf.InteractiveSession()
+
+        sess.run(tf.global_variables_initializer())
+
+
+        cost = []
+        accu = []
+        test_accu = []
+        for ep in range(epochs):
+            x_feed, y_feed = get_training_batch(batch_size)
+            _,cos, predictions, acc = sess.run([optimizer, cross_entropy, prediction, accuracy], feed_dict={x:x_feed, ref:y_feed})
+
+            test_acc = accuracy.eval(feed_dict={x:x_test, ref:y_test})
+            cost.append(cos)
+            accu.append(acc)
+            test_accu.append(test_acc)
+        
 
         covariance = np.matrix(L.transpose()) * np.matrix(L)      
         covariance /= self.images                                                             
