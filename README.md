@@ -1,4 +1,4 @@
-# 4220Project
+# Face Detection
 
 # Goal:
 - To identify and locate faces in a video using eigenfaces.
