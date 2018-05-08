@@ -34,5 +34,7 @@
   - Read sections via sliding windows of varying size
   - See where was the best match for a face
   
-![alt text](https://github.com/muhammadahmad2/4220Project/raw/master/Picture1.png)
-![alt text](https://github.com/muhammadahmad2/4220Project/raw/master/Picture2.png)
+![alt text](https://github.com/muhammadahmad2/FaceDetection/raw/master/Picture1.png)
+![alt text](https://github.com/muhammadahmad2/FaceDetection/raw/master/Picture2.png)
+![alt text](https://github.com/muhammadahmad2/FaceDetection/raw/master/output.avi)
+
