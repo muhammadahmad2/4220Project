@@ -10,11 +10,9 @@
 
 - Compute mean of all images
 
-![alt text](https://docs.opencv.org/2.4/_images/math/3dbbce688326229d8abc6ce12eb5391124b5e885.png)
 - Compute the covariance matrix
   - Subtract the average from each image to get difference
   
-  ![alt text](https://docs.opencv.org/2.4/_images/math/23a70f3bfb61f971a2f033473b3fd856bfa05501.png)
   
 - Compute the eigenvectors of covariance matrix
   - Detect important locations by getting largest eigenvalues
@@ -36,5 +34,4 @@
   
 ![alt text](https://github.com/muhammadahmad2/FaceDetection/raw/master/Picture1.png)
 ![alt text](https://github.com/muhammadahmad2/FaceDetection/raw/master/Picture2.png)
-![alt text](https://github.com/muhammadahmad2/FaceDetection/raw/master/output.avi)
 
